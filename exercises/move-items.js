@@ -2,7 +2,7 @@
  * SORTING NODES WITHIN A CONTAINER
  * Please, make sure to read the following files in the exercises-info folder before you start
  * * 01 SelectNodes.md
-*/
+ */
 
 /**
  * @task
@@ -11,9 +11,7 @@
  * Example: const allItems = <Your code>;
  */
 
-// Your code goes here...
-
-
+const allItems = document.querySelectorAll(".item");
 
 /**
  * @task
@@ -22,9 +20,7 @@
  * Example: const main = <Your code>
  * */
 
-// Your code goes here
-
-
+const main = document.getElementById("main");
 
 /**
  * @task
@@ -33,9 +29,7 @@
  * Example: const favs = <Your code>;
  */
 
-// Your code goes here
-
-
+const favs = document.getElementById("favs");
 
 /**
  * @task
@@ -46,9 +40,20 @@
  * Changes the icon of the element: fa-heart-circle-plus for main, fa-heart-crack for favs items.
  */
 
-// Your code goes here
-
-
+const updateCollections = (id, direction) => {
+  const ele = allItems[id - 1];
+  direction == "toMain"
+    ? (main.appendChild(ele),
+      ele.children[0].classList.replace(
+        "fa-heart-crack",
+        "fa-heart-circle-plus"
+      ))
+    : (favs.appendChild(ele),
+      ele.children[0].classList.replace(
+        "fa-heart-circle-plus",
+        "fa-heart-crack"
+      ));
+};
 
 /**
  * @task
@@ -64,6 +69,10 @@
  * * Make the updateCollections function call, assign the item Id and the direction defined above
  */
 
-// Your code goes here...
-
-
+allItems.forEach((item) => {
+  item.addEventListener("click", function (e) {
+    this.parentElement.id == "main"
+      ? updateCollections(Number(this.id), "toFavs")
+      : updateCollections(Number(this.id), "toMain");
+  });
+});

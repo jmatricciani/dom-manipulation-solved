@@ -37,4 +37,44 @@
  * * add the event listener to the container, pass the callback.
  */
 
-// Your code goes here...
+const cards = document.getElementsByClassName("cardsContainer")[0];
+
+const renderColor = () => {
+  Array.from(cards.children).forEach((card) => {
+    if (card.dataset.fav == "true") card.style.backgroundColor = "red";
+    else card.style.backgroundColor = "white";
+  });
+};
+
+const renderHTML = () => {
+  const favs = JSON.parse(localStorage.getItem("fav"));
+  Array.from(cards.children).forEach((card) => {
+    card.dataset.fav = favs.includes(card.id) ? true : false;
+  });
+};
+
+const updateStorage = (id) => {
+  const favs = JSON.parse(localStorage.getItem("fav"));
+  if (favs == null) {
+    localStorage.setItem("fav", JSON.stringify([id]));
+  } else if (favs.includes(id)) {
+    localStorage.setItem(
+      "fav",
+      JSON.stringify(favs.filter((item) => item != id))
+    );
+  } else {
+    favs.push(id);
+    localStorage.setItem("fav", JSON.stringify(favs));
+  }
+};
+cards.addEventListener("click", (e) => {
+  const item = e.target;
+  if (item.classList[0] == "card") {
+    updateStorage(item.id);
+    renderHTML();
+    renderColor();
+  }
+});
+
+renderHTML();
+renderColor();
